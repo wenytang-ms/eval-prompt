@@ -26,17 +26,6 @@ templateLoader = jinja2.FileSystemLoader(pathlib.Path(__file__).parent.resolve()
 templateEnv = jinja2.Environment(loader=templateLoader)
 system_message_template = templateEnv.get_template("system-message.jinja2")
 
-# Function to decode a string
-def decode_str(string: str) -> str:
-    return string.encode().decode("unicode-escape").encode("latin1").decode("utf-8")
-
-# Function to remove nested parentheses from a string
-def remove_nested_parentheses(string: str) -> str:
-    pattern = r"\([^()]+\)"
-    while re.search(pattern, string):
-        string = re.sub(pattern, "", string)
-    return string
-
 def get_api_spec(query: str) -> str:
     # Get the API spec from the OpenAI API
     api_spec = AzureOpenAI.get_api_spec(query)
@@ -63,20 +52,17 @@ def generateApiSpec(query: str, context: str) -> Response:
     response = augemented_qa(query, context)
     return {"response": response }
 
-# Main function
-if __name__ == "__main__":
-    api_folder = pathlib.Path("../apisrc")
-    query='Please be professional, and use below infomation to generate an OpenAPI specification documentation with YAML format:'
-    output_dir = pathlib.Path("../output")
-    output_dir.mkdir(exist_ok=True)
-    apispec_dir = pathlib.Path("../apispec")
+def generateOutputData(query: str, srcDir: str, specDir: str, outDir: str) -> dict:
+    api_folder = pathlib.Path(srcDir)
+    output_dir = pathlib.Path(outDir)
+    apispec_dir = pathlib.Path(specDir)
     for api_file in api_folder.glob("*"):
         with open(api_file, "r", encoding="utf-8") as file:
             file_content = file.read()
         response = generateApiSpec(query, file_content)
-        file_number = re.search(r'\d+', api_file.stem)
-        if file_number:
-            yml_file = apispec_dir / f"{file_number.group()}.yml"
+        file_name = api_file.stem
+        if file_name:
+            yml_file = apispec_dir / f"{file_name}.yml"
             if yml_file.exists():
                 with open(yml_file, "r", encoding="utf-8") as yml:
                     ground_truth_content = yml.read()
@@ -89,3 +75,12 @@ if __name__ == "__main__":
         
         with open(output_dir / "output.jsonl", "a", encoding="utf-8") as jsonl_file:
             jsonl_file.write(json.dumps(output) + "\n")
+
+# Main function
+if __name__ == "__main__":
+    api_folder = pathlib.Path(__file__).parent.resolve() / "../apisrc"
+    query='Please be professional, and use below infomation to generate an OpenAPI specification documentation with YAML format:'
+    output_dir = pathlib.Path(__file__).parent.resolve() / "../output"
+    output_dir.mkdir(exist_ok=True)
+    apispec_dir = pathlib.Path(__file__).parent.resolve() / "../apispec"
+    generateOutputData(query, api_folder, apispec_dir, output_dir)
