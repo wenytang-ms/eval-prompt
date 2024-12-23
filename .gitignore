@@ -1,2 +1,3 @@
 .env
 output/output.jsonl
+evalprompt/__pycache__
