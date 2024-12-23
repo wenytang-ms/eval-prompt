@@ -16,10 +16,6 @@ AZURE_OPENAI_ENDPOINT=
 AZURE_OPENAI_API_KEY=
 ```
 
-## Generate output
-
-1. run `python evalprompt/generateApiSpec.py`
-
 ## Evaluation
 
 1. Follow `prompt.ipynb` to see the evaluation result

@@ -7,7 +7,6 @@ import pathlib
 import random
 import time
 from functools import partial
-
 import jinja2
 import requests
 import re
@@ -54,8 +53,11 @@ def generateApiSpec(query: str, context: str) -> Response:
 
 def generateOutputData(query: str, srcDir: str, specDir: str, outDir: str) -> dict:
     api_folder = pathlib.Path(srcDir)
-    output_dir = pathlib.Path(outDir)
     apispec_dir = pathlib.Path(specDir)
+    output_dir = pathlib.Path(outDir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = pathlib.Path(output_dir, "output.jsonl")
+    output_file.touch(exist_ok=True)
     for api_file in api_folder.glob("*"):
         with open(api_file, "r", encoding="utf-8") as file:
             file_content = file.read()
@@ -73,7 +75,7 @@ def generateOutputData(query: str, srcDir: str, specDir: str, outDir: str) -> di
             "ground_truth": ground_truth_content
         }
         
-        with open(output_dir / "output.jsonl", "a", encoding="utf-8") as jsonl_file:
+        with open(output_file, "a", encoding="utf-8") as jsonl_file:
             jsonl_file.write(json.dumps(output) + "\n")
 
 # Main function
