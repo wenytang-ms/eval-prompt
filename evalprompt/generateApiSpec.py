@@ -16,6 +16,7 @@ from openai import AzureOpenAI
 from typing import List, Tuple, TypedDict
 import json
 from dotenv import load_dotenv
+import subprocess
 load_dotenv("../.env")
 # Create a session for making HTTP requests
 session = requests.Session()
@@ -61,6 +62,26 @@ def get_language_from_extension(extension: str) -> str:
         "cpp": "c++"
     }
     return extension_to_language.get(extension, "unknown")
+def run_npm_script(filename: str) -> str:
+    try:
+        result = subprocess.run(["spectral", "lint", filename], check=True, capture_output=True, text=True)
+        print("Output:", result.stdout)
+    except subprocess.CalledProcessError as e:
+        print("Error:", e.stderr)
+
+def generateSpec(srcDir: src, outDir: out) -> None:
+    api_folder = pathlib.Path(srcDir)
+    output_dir = pathlib.Path(outDir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for api_file in api_folder.glob("*"):
+        with open(api_file, "r", encoding="utf-8") as file:
+            file_content = file.read()
+        file_extension = api_file.suffix[1:]  # Get the file extension without the dot
+        language = get_language_from_extension(file_extension)
+        response = generateApiSpec(file_content, language)
+        output_file = output_dir / f"{api_file.stem}_response.txt"
+        with open(output_file, "w", encoding="utf-8") as out_file:
+            out_file.write(response["response"])
 
 def generateOutputData(srcDir: str, specDir: str, outDir: str) -> dict:
     api_folder = pathlib.Path(srcDir)

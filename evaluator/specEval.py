@@ -9,9 +9,7 @@ class SpecEval(EvaluatorBase):
         import re
         import string
 
-
-
-    def evaluate(self, **kwargs):
+    def evaluate(self):
         # Load the output file
         with open(self.output_file, "r", encoding="utf-8") as output_file:
             output_data = output_file.readlines()
