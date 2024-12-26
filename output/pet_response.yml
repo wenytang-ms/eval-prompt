@@ -5,6 +5,7 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:3000
+    description: Local server
 paths:
   /api/pets:
     get:
@@ -38,12 +39,9 @@ paths:
                   type: string
                 type:
                   type: string
-              required:
-                - name
-                - type
       responses:
         '200':
-          description: The created pet
+          description: The newly created pet
           content:
             application/json:
               schema:
@@ -99,9 +97,6 @@ paths:
                   type: string
                 type:
                   type: string
-              required:
-                - name
-                - type
       responses:
         '200':
           description: The updated pet

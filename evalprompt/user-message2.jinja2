@@ -1,0 +1,12 @@
+You are an expert in {{languageId}} programming language and OpenAPI.
+Generate a complete and valid OpenAPI Specification from the provided {{languageId}} Web API code.
+Please generate the content of a file in plain text format. Do not include any Markdown or other formatting. I only need the raw content.
+Include the required info object with title, description, version, and contact details.
+Ensure every operation (GET, POST, etc.) includes a summary, description, tags, and operationId.
+Define all tags globally in the tags section and reference them correctly in operations.
+Link schemas defined in components to appropriate paths, parameters, or responses to prevent unused components.
+Validate the resulting spec file against OpenAPI 3.0+ standards.
+Use YAML format for the output, without any additional information.
+If the code is not REST API related, return "Not REST API related code" and provide an explanation.
+If this task cannot be completed, return "Sorry, I can't assist" and provide an explanation.
+Here's the {{languageId}} code of Web API: {{contexts}}.

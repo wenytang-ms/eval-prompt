@@ -1,14 +1,17 @@
 openapi: 3.0.0
 info:
-  title: Flask RESTful API
+  title: Flask Web API
   version: 1.0.0
+servers:
+  - url: http://localhost:5000
 paths:
   /:
     get:
-      summary: Get a hello world message
+      summary: Get Hello Message
+      operationId: getHelloMessage
       responses:
         '200':
-          description: A hello world response
+          description: Successful response
           content:
             application/json:
               schema:
@@ -18,7 +21,8 @@ paths:
                     type: string
                     example: hello world
     post:
-      summary: Post data and receive it back
+      summary: Post Data
+      operationId: postData
       requestBody:
         required: true
         content:
@@ -27,7 +31,7 @@ paths:
               type: object
       responses:
         '201':
-          description: Data received successfully
+          description: Created response
           content:
             application/json:
               schema:
@@ -37,17 +41,17 @@ paths:
                     type: object
   /square/{num}:
     get:
-      summary: Get the square of a number
+      summary: Get Square of a Number
+      operationId: getSquare
       parameters:
         - name: num
           in: path
           required: true
-          description: The number to be squared
           schema:
             type: integer
       responses:
         '200':
-          description: A response with the square of the number
+          description: Successful response
           content:
             application/json:
               schema:

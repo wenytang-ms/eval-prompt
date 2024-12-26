@@ -17,14 +17,14 @@ from typing import List, Tuple, TypedDict
 import json
 from dotenv import load_dotenv
 import subprocess
-load_dotenv()
+load_dotenv('..')
 # Create a session for making HTTP requests
 session = requests.Session()
 
 # Set up Jinja2 for templating
 templateLoader = jinja2.FileSystemLoader(pathlib.Path(__file__).parent.resolve())
 templateEnv = jinja2.Environment(loader=templateLoader)
-user_message_template2 = templateEnv.get_template("user-message.jinja2")
+user_message_template2 = templateEnv.get_template("user-message2.jinja2")
 
 def get_api_spec(query: str) -> str:
     # Get the API spec from the OpenAI API
@@ -64,7 +64,7 @@ def get_language_from_extension(extension: str) -> str:
     return extension_to_language.get(extension, "unknown")
 def run_npm_script(filename: str, output_dir: str) -> str:
     try:
-        result = subprocess.run(["spectral", "lint", filename, "--ruleset", "https://raw.githubusercontent.com/Azure/APICenter-Analyzer/preview/resources/rulesets/oas.yaml"], check=True, capture_output=True, text=True, cwd=output_dir)
+        result = subprocess.run(["spectral", "lint", filename, "--ruleset", "https://raw.githubusercontent.com/Azure/APICenter-Analyzer/preview/resources/rulesets/oas.yaml"], shell=True, check=True, capture_output=True, text=True, cwd=output_dir)
         print("Output:", result.stdout)
         return result.stdout
     except subprocess.CalledProcessError as e:
