@@ -1,0 +1,42 @@
+openapi: 3.0.1
+info:
+  title: Weather Forecast API
+  description: API for retrieving weather forecast data.
+  version: 1.0.0
+servers:
+  - url: /
+paths:
+  /WeatherForecast:
+    get:
+      operationId: GetWeatherForecast
+      summary: Retrieves a list of weather forecasts.
+      tags:
+        - WeatherForecast
+      responses:
+        '200':
+          description: A list of weather forecasts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WeatherForecast'
+components:
+  schemas:
+    WeatherForecast:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          description: The date of the weather forecast.
+        temperatureC:
+          type: integer
+          description: The temperature in Celsius.
+        summary:
+          type: string
+          description: A summary of the weather conditions.
+      required:
+        - date
+        - temperatureC
+        - summary

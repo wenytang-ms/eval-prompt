@@ -17,14 +17,14 @@ from typing import List, Tuple, TypedDict
 import json
 from dotenv import load_dotenv
 import subprocess
-load_dotenv("../.env")
+load_dotenv()
 # Create a session for making HTTP requests
 session = requests.Session()
 
 # Set up Jinja2 for templating
 templateLoader = jinja2.FileSystemLoader(pathlib.Path(__file__).parent.resolve())
 templateEnv = jinja2.Environment(loader=templateLoader)
-user_message_template2 = templateEnv.get_template("user-message2.jinja2")
+user_message_template2 = templateEnv.get_template("user-message.jinja2")
 
 def get_api_spec(query: str) -> str:
     # Get the API spec from the OpenAI API
@@ -62,26 +62,37 @@ def get_language_from_extension(extension: str) -> str:
         "cpp": "c++"
     }
     return extension_to_language.get(extension, "unknown")
-def run_npm_script(filename: str) -> str:
+def run_npm_script(filename: str, output_dir: str) -> str:
     try:
-        result = subprocess.run(["spectral", "lint", filename], check=True, capture_output=True, text=True)
+        result = subprocess.run(["spectral", "lint", filename, "--ruleset", "https://raw.githubusercontent.com/Azure/APICenter-Analyzer/preview/resources/rulesets/oas.yaml"], check=True, capture_output=True, text=True, cwd=output_dir)
         print("Output:", result.stdout)
+        return result.stdout
     except subprocess.CalledProcessError as e:
         print("Error:", e.stderr)
 
-def generateSpec(srcDir: src, outDir: out) -> None:
+def generateSpec(srcDir: str, outDir: str) -> None:
     api_folder = pathlib.Path(srcDir)
     output_dir = pathlib.Path(outDir)
     output_dir.mkdir(parents=True, exist_ok=True)
+    output_result = output_dir / "output.jsonl"
     for api_file in api_folder.glob("*"):
         with open(api_file, "r", encoding="utf-8") as file:
             file_content = file.read()
         file_extension = api_file.suffix[1:]  # Get the file extension without the dot
         language = get_language_from_extension(file_extension)
         response = generateApiSpec(file_content, language)
-        output_file = output_dir / f"{api_file.stem}_response.txt"
+        filename = f"{api_file.stem}_response.yml"
+        output_file = output_dir / filename
         with open(output_file, "w", encoding="utf-8") as out_file:
             out_file.write(response["response"])
+        check_res=run_npm_script(filename, outDir)
+        output = {
+            "response": response["response"],
+            "context": file_content,
+            "checkRes": check_res
+        }
+        with open(output_result, "a", encoding="utf-8") as jsonl_file:
+            jsonl_file.write(json.dumps(output) + "\n")
 
 def generateOutputData(srcDir: str, specDir: str, outDir: str) -> dict:
     api_folder = pathlib.Path(srcDir)
@@ -113,8 +124,12 @@ def generateOutputData(srcDir: str, specDir: str, outDir: str) -> dict:
 
 # Main function
 if __name__ == "__main__":
+    import os
+
+    user_home = os.getenv('AZURE_OPENAI_ENDPOINT')
+    print(user_home)
     api_folder = pathlib.Path(__file__).parent.resolve() / "../apisrc"
     output_dir = pathlib.Path(__file__).parent.resolve() / "../output"
     output_dir.mkdir(exist_ok=True)
     apispec_dir = pathlib.Path(__file__).parent.resolve() / "../apispec"
-    generateOutputData(api_folder, apispec_dir, output_dir)
+    generateSpec(api_folder, output_dir)

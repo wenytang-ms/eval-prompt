@@ -1,0 +1,57 @@
+openapi: 3.0.0
+info:
+  title: Flask RESTful API
+  version: 1.0.0
+paths:
+  /:
+    get:
+      summary: Get a hello world message
+      responses:
+        '200':
+          description: A hello world response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: hello world
+    post:
+      summary: Post data and receive it back
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Data received successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+  /square/{num}:
+    get:
+      summary: Get the square of a number
+      parameters:
+        - name: num
+          in: path
+          required: true
+          description: The number to be squared
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A response with the square of the number
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  square:
+                    type: integer
