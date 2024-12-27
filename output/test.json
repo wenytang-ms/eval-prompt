@@ -1,0 +1,28 @@
+[
+	{
+		"code": "invalid-ref",
+		"path": [
+			"paths",
+			"/api/pets",
+			"post",
+			"requestBody",
+			"content",
+			"application/json",
+			"schema",
+			"$ref"
+		],
+		"message": "'#/components/schemas/PetInput' does not exist",
+		"severity": 0,
+		"range": {
+			"start": {
+				"line": 43,
+				"character": 20
+			},
+			"end": {
+				"line": 43,
+				"character": 51
+			}
+		},
+		"source": "c:/Users/wenyutang/workspace/eval-prompt/output/pet_response.yml"
+	}
+]
