@@ -1,10 +1,14 @@
 import jinja2
 import pathlib
 import os
+import json
 from openai import AzureOpenAI
 from typing import TypedDict
 from azure.identity import get_bearer_token_provider, AzureCliCredential
 import re
+import pystache
+import shutil
+
 def get_language_from_extension(extension: str) -> str:
     extension_to_language = {
         "cs": "csharp",
@@ -19,13 +23,21 @@ def get_language_from_extension(extension: str) -> str:
 class Response(TypedDict):
     response: str
     context: str
+
 def generateApiSpec(context: str, languageId: str) -> Response:
-    response = augemented_qa(context, languageId)
+    response = get_res_from_openai(context, languageId)
     return {"response": response }
 
 templateLoader = jinja2.FileSystemLoader(pathlib.Path(__file__).parent.resolve())
 templateEnv = jinja2.Environment(loader=templateLoader)
 user_message_template2 = templateEnv.get_template("user-message.jinja2")
+
+def get_prompt(context: json):
+    path = pathlib.Path(__file__).parent.resolve()
+    with open(path / '../prompts/genSpecFromApiCode.mustache', 'r') as f:
+        template = f.read()
+        rendered = pystache.render(template, context)
+        return rendered
 
 def get_openai_client():
     if os.environ['RBAC'] == "TRUE":
@@ -44,8 +56,12 @@ def get_openai_client():
             api_key=os.environ["AZURE_OPENAI_API_KEY"],
         )
 
-def augemented_qa(context: str, languageId: str) -> str:
-    user_message = user_message_template2.render(contexts=context, languageId=languageId)
+def get_res_from_openai(context: str, languageId: str) -> str:
+    context = {
+        "context": context,
+        "languageId": languageId
+    }
+    user_message = get_prompt(context)
     messages = [{"role": "user", "content": user_message}]
     client=get_openai_client()
     response = client.chat.completions.create(

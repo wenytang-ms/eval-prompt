@@ -2368,6 +2368,22 @@ docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
 tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
+name = "pystache"
+version = "0.6.7"
+description = "Mustache for Python"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pystache-0.6.7-py3-none-any.whl", hash = "sha256:08562f53b3afd9b55c1eb1d4980f4ced68e07dbed3aceffda8bb600286b93f76"},
+    {file = "pystache-0.6.7.tar.gz", hash = "sha256:55d8bb5aac450389369584b1627cecbe9069e13a09471a8fe783c44b64e94d5a"},
+]
+
+[package.extras]
+cov = ["coverage", "coverage_python_version"]
+doc = ["recommonmark", "sphinx", "sphinx_git", "sphinx_rtd_theme", "sphinxcontrib-apidoc"]
+test = ["pytest", "pytest-cov"]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 description = "Extensions to the standard Python datetime module"
@@ -3395,4 +3411,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "3d9d75d4c50bfe0dcb56a236ed3f88b65cf83655c5ac95dce95425bc53b32407"
+content-hash = "600d11afc870e5fd1f75bfc0438d25f0f2de2c02f2879699c9d72d99ccc1a640"
