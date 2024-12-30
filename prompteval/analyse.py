@@ -73,14 +73,14 @@ def any_spec_res(jsons: List[dict]) -> Tuple[set[dict], dict]:
 
 if __name__ == "__main__":
     current_path = pathlib.Path(__file__).parent.resolve()
-    # ruleset_url = pathlib.Path(current_path, '../rulesets/default.yaml')
+    ruleset_url = "https://raw.githubusercontent.com/Azure/APICenter-Analyzer/preview/resources/rulesets/oas.yaml"
     res_folder_path = pathlib.Path(current_path, '../results')
     unique_results = set()
     calcs = []
     for res_file in res_folder_path.glob("*"):
         if res_file.suffix == ".yml":
             out_file = os.path.basename(res_file.stem + "_output.json")
-            # spectral_analyse(os.path.basename(res_file), ruleset_url, res_folder_path, os.path.basename(out_file))
+            spectral_analyse(os.path.basename(res_file), ruleset_url, res_folder_path, os.path.basename(out_file))
             res = any_spec_res(text_to_json_objects(res_folder_path, out_file))
             for item in res:
                 unique_results.add(item)
