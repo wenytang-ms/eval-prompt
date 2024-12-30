@@ -56,7 +56,13 @@ jobs:
       - name: install spectral
         run: npm install -g @stoplight/spectral-cli
 
-      - name: run anaysis
+      - name: run spectral
+        run: |
+          spectral lint results/cstest_response.yml --ruleset=https://raw.githubusercontent.com/Azure/APICenter-Analyzer/preview/resources/rulesets/oas.yaml --format json -o results/cstest_response_output.json
+          spectral lint results/pytest_response.yml --ruleset=https://raw.githubusercontent.com/Azure/APICenter-Analyzer/preview/resources/rulesets/oas.yaml --format json -o results/pytest_response_output.json
+          spectral lint results/pet_response.yml --ruleset=https://raw.githubusercontent.com/Azure/APICenter-Analyzer/preview/resources/rulesets/oas.yaml --format json -o results/pet_response_output.json
+
+      - name: run evaluate
         run: poetry run python prompteval/analyse.py
 
       - uses: actions/upload-artifact@v4
