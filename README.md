@@ -9,8 +9,10 @@
 1. Install spectral globally `npm install -g @stoplight/spectral-cli`
 
 ## Setup Env
+if use RBAC just set `RBAC` as `TRUE`, else set `FALSE`
 
 ``` env
+RBAC=
 AZURE_OPENAI_API_VERSION=
 AZURE_OPENAI_DEPLOYMENT=
 AZURE_OPENAI_ENDPOINT=
