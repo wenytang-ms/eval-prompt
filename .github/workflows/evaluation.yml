@@ -34,6 +34,12 @@ jobs:
         run: |
           poetry run python prompteval/downloadSpecFiles.py
 
+      - name: setup output
+        working-directory: .
+        run: |
+          mkdir -p results
+          touch results/output.jsonl
+
       - name: generate yml
         env:
           AZURE_OPENAI_API_VERSION: ${{ secrets.AZURE_OPENAI_API_VERSION }}
@@ -46,9 +52,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - run: |
-          touch results/output.jsonl
 
       - name: install spectral
         run: npm install -g @stoplight/spectral-cli
