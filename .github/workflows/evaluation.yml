@@ -13,7 +13,7 @@ jobs:
 
       - name: Setup Poetry env
         run: |
-          pip install poetry -y
+          pip install poetry
           poetry shell
           poetry install
       
