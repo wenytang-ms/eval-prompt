@@ -1,4 +1,3 @@
-import jinja2
 import pathlib
 import os
 import json
@@ -27,10 +26,6 @@ class Response(TypedDict):
 def generateApiSpec(context: str, languageId: str) -> Response:
     response = get_res_from_openai(context, languageId)
     return {"response": response }
-
-templateLoader = jinja2.FileSystemLoader(pathlib.Path(__file__).parent.resolve())
-templateEnv = jinja2.Environment(loader=templateLoader)
-user_message_template2 = templateEnv.get_template("user-message.jinja2")
 
 def get_prompt(context: json):
     path = pathlib.Path(__file__).parent.resolve()
