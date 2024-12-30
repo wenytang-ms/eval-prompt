@@ -5,17 +5,23 @@ on:
 
 jobs:
   evaluation:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     environment: eng
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' 
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
 
-      - name: Setup Poetry env
-        run: |
-          pip install poetry
-          poetry shell
-          poetry install
+      - name: Install the project dependencies
+        run: poetry install
       
       - name: Azure login
         uses: azure/login@v2
@@ -29,8 +35,42 @@ jobs:
           AZURE_STORAGE_ACCOUNT_URL: ${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}
           AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}
         run: |
-          python prompteval/downloadSpecFiles.py
+          poetry run python prompteval/downloadSpecFiles.py
 
-      - name: ls files
+      - name: generate yml
+        env:
+          AZURE_OPENAI_API_VERSION: ${{ secrets.AZURE_OPENAI_API_VERSION }}
+          AZURE_OPENAI_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_DEPLOYMENT }}
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          RBAC: ${{ secrets.RBAC }}
         run: |
-          ls -l./apisrc
+          poetry run python prompteval/prompteval.py
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: install spectral
+        run: npm install -g @stoplight/spectral-cli
+
+      - name: run evaluate
+        run: |
+          poetry run python prompteval/evaluate.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: results
+          path: |
+            results/
+
+      - name: Read JSONL file and show warning or error
+        run: |
+          Get-Content ./results/output.jsonl | ForEach-Object {
+            $json = $_ | ConvertFrom-Json
+            if ($json.severity -eq 1) {
+              Write-Output "::warning::$($json.code, $json.message)"
+            } elseif ($json.severity -eq 0) {
+              Write-Output "::error::$($json.code, $json.message)"
+            }
+          }
+        shell: pwsh
