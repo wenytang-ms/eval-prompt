@@ -83,7 +83,8 @@ if __name__ == "__main__":
             res = any_spec_res(text_to_json_objects(res_folder_path, out_file))
             for item in res:
                 unique_results.add(item)
-    with open(res_folder_path/'output.jsonl', 'w', encoding="utf-8") as json_file:
+    output_jsonl_file  = res_folder_path / "output.jsonl"
+    with open(output_jsonl_file, 'w', encoding="utf-8") as json_file:
         for item in unique_results:
             # 将每个对象转换回JSON字符串，并写入文件，每个对象占一行
             json.dump(item.to_json(), json_file)
