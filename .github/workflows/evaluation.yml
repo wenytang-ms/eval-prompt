@@ -67,10 +67,10 @@ jobs:
         run: |
           Get-Content ./results/output.jsonl | ForEach-Object {
             $json = $_ | ConvertFrom-Json
-            if ($json.priority -eq 1) {
-              Write-Output "::warning::$($json.message)"
-            } elseif ($json.priority -eq 0) {
-              Write-Output "::error::$($json.message)"
+            if ($json.severity -eq 1) {
+              Write-Output "::warning::$($json.code, $json.message)"
+            } elseif ($json.severity -eq 0) {
+              Write-Output "::error::$($json.code, $json.message)"
             }
           }
         shell: pwsh
