@@ -89,8 +89,9 @@ def clean_folder(folder_path):
         print(f"The folder {folder_path} does not exist.")
 
 if __name__ == "__main__":
-    api_func_folder = pathlib.Path('../apisrc')
-    res_folder_path = pathlib.Path('../results')
+    current_path = pathlib.Path(__file__).parent.resolve()
+    api_func_folder = pathlib.Path(current_path, '../apisrc')
+    res_folder_path = pathlib.Path(current_path, '../results')
     clean_folder(res_folder_path)
     for api_file in api_func_folder.glob('*'):
         with open(api_file, 'r', encoding='utf-8') as f:

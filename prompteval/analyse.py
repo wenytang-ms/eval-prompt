@@ -73,7 +73,8 @@ def any_spec_res(jsons: List[dict]) -> Tuple[set[dict], dict]:
 
 if __name__ == "__main__":
     ruleset_url = "https://raw.githubusercontent.com/Azure/APICenter-Analyzer/preview/resources/rulesets/oas.yaml"
-    res_folder_path = pathlib.Path('../results')
+    current_path = pathlib.Path(__file__).parent.resolve()
+    res_folder_path = pathlib.Path(current_path, '../results')
     unique_results = set()
     calcs = []
     for res_file in res_folder_path.glob("*"):
