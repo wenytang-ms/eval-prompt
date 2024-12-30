@@ -16,12 +16,6 @@ jobs:
 
       - name: Install poetry
         uses: abatilo/actions-poetry@v2
-
-      - uses: actions/cache@v3
-        name: Define a cache for the virtual environment based on the dependencies lock file
-        with:
-          path: ./.venv
-          key: venv-${{ hashFiles('poetry.lock') }}
       
       - name: Install the project dependencies
         run: poetry install
@@ -38,7 +32,7 @@ jobs:
           AZURE_STORAGE_ACCOUNT_URL: ${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}
           AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}
         run: |
-          poetry run ./prompteval/downloadSpecFiles.py
+          poetry run python prompteval/downloadSpecFiles.py
 
       - name: ls files
         run: |
