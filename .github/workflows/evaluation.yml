@@ -13,12 +13,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Install poetry
-        uses: abatilo/actions-poetry@v2
       
       - name: Install the project dependencies
-        run: poetry install
+        run: pip install -r requirements.txt
       
       - name: Azure login
         uses: azure/login@v2
@@ -32,7 +29,7 @@ jobs:
           AZURE_STORAGE_ACCOUNT_URL: ${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}
           AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}
         run: |
-          poetry run python prompteval/downloadSpecFiles.py
+          python prompteval/downloadSpecFiles.py
 
       - name: setup output
         working-directory: .
@@ -47,7 +44,7 @@ jobs:
           AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
           RBAC: ${{ secrets.RBAC }}
         run: |
-          poetry run python prompteval/prompteval.py
+          python prompteval/prompteval.py
 
       - uses: actions/setup-node@v4
         with:
@@ -64,7 +61,6 @@ jobs:
 
       - name: run evaluate
         run: |
-          poetry shell 
           python prompteval/analyse.py
 
       - uses: actions/upload-artifact@v4
