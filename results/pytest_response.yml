@@ -1,16 +1,14 @@
 openapi: 3.0.0
 info:
-  title: API Specification
-  version: '1.0.0'
-servers:
-  - url: 'http://localhost:5000'
+  title: Flask REST API
+  version: 1.0.0
 paths:
-  '/':
+  /:
     get:
-      summary: Return greeting message
+      summary: Get Hello World Message
       responses:
         '200':
-          description: Successful response
+          description: A JSON message saying hello world
           content:
             application/json:
               schema:
@@ -18,9 +16,9 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: 'hello world'
+                    example: hello world
     post:
-      summary: Receive and return submitted data
+      summary: Post JSON Data
       requestBody:
         required: true
         content:
@@ -29,7 +27,7 @@ paths:
               type: object
       responses:
         '201':
-          description: Data received
+          description: A JSON object with the posted data
           content:
             application/json:
               schema:
@@ -37,18 +35,19 @@ paths:
                 properties:
                   data:
                     type: object
-  '/square/{num}':
+  /square/{num}:
     get:
-      summary: Return the square of the specified number
+      summary: Get Square of a Number
       parameters:
-        - in: path
-          name: num
+        - name: num
+          in: path
           required: true
+          description: The number to square
           schema:
             type: integer
       responses:
         '200':
-          description: Successful response
+          description: A JSON object with the square of the number
           content:
             application/json:
               schema:

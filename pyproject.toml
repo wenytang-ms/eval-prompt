@@ -12,6 +12,9 @@ azure-ai-evaluation = "^1.1.0"
 pandas = "^2.2.3"
 ipykernel = "^6.29.5"
 python-dotenv = "^1.0.1"
+azure-identity = "^1.19.0"
+pystache = "^0.6.7"
+azure-storage-blob = "^12.24.0"
 
 
 [tool.poetry.group.dev.dependencies]

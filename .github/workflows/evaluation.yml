@@ -1,0 +1,28 @@
+name: evaluation
+on:
+  workflow_dispatch:
+    
+
+jobs:
+  evaluation:
+    runs-on: ubuntu-latest
+    environment: eng
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Poetry env
+        uses: 5yutan5/setup-poetry-env@v1.1.0
+        with:
+          python-version: 3.10
+
+      - name: download api spec files
+        env:
+          AZURE_STORAGE_ACCOUNT_URL: ${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}
+          AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}
+        run: |
+          python prompteval/downloadSpecFiles.py
+
+      - name: ls files
+        run: |
+          ls -l./apisrc
