@@ -58,7 +58,7 @@ def get_openai_client():
 
 def get_res_from_openai(context: str, languageId: str) -> str:
     context = {
-        "context": context,
+        "contexts": context,
         "languageId": languageId
     }
     user_message = get_prompt(context)
