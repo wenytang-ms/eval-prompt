@@ -84,7 +84,7 @@ if __name__ == "__main__":
             for item in res:
                 unique_results.add(item)
     with open(pathlib.Path(res_folder_path, 'output.jsonl'), 'w') as json_file:
-      for item in unique_results:
-        # 将每个对象转换回JSON字符串，并写入文件，每个对象占一行
-        json.dump(item.to_json(), json_file)
-        json_file.write('\n')
+        for item in unique_results:
+            # 将每个对象转换回JSON字符串，并写入文件，每个对象占一行
+            json.dump(item.to_json(), json_file)
+            json_file.write('\n')
