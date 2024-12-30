@@ -71,6 +71,8 @@ def remove_code_block_format(text):
     return text
 
 def clean_folder(folder_path):
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
     # 检查文件夹是否存在
     if os.path.exists(folder_path) and os.path.isdir(folder_path):
         # 遍历文件夹中的所有内容
