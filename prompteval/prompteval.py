@@ -87,3 +87,18 @@ def clean_folder(folder_path):
                 print(f'Failed to delete {file_path}. Reason: {e}')
     else:
         print(f"The folder {folder_path} does not exist.")
+
+if __name__ == "__main__":
+    api_func_folder = pathlib.Path('../apisrc')
+    res_folder_path = pathlib.Path('../results')
+    clean_folder(res_folder_path)
+    for api_file in api_func_folder.glob('*'):
+        with open(api_file, 'r', encoding='utf-8') as f:
+            api_func = f.read()
+        file_extension = api_file.suffix[1:]
+        language = get_language_from_extension(file_extension)
+        response = generateApiSpec(api_func, language)
+        filename = f"{api_file.stem}_response.yml"
+        output_file = res_folder_path / filename
+        with open(output_file, "w", encoding="utf-8") as out_file:
+            out_file.write(remove_code_block_format(response["response"]))

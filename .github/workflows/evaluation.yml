@@ -34,6 +34,27 @@ jobs:
         run: |
           poetry run python prompteval/downloadSpecFiles.py
 
-      - name: ls files
+      - name: generate yml
+        env:
+          AZURE_OPENAI_API_VERSION: ${{ secrets.AZURE_OPENAI_API_VERSION }}
+          AZURE_OPENAI_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_DEPLOYMENT }}
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          RBAC: ${{ secrets.RBAC }}
         run: |
-          ls -l./apisrc
+          poetry run python prompteval/prompteval.py
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: install spectral
+        run: npm install -g @stoplight/spectral-cli
+
+      - name: run anaysis
+        run: poetry run python prompteval/analyse.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: results
+          path: |
+            results/

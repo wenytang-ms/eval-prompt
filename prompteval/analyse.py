@@ -72,10 +72,19 @@ def any_spec_res(jsons: List[dict]) -> Tuple[set[dict], dict]:
     return unique_results
 
 if __name__ == "__main__":
-    out_file = "pet_response_output.json"
-    res_file = "pet_response.yml"
-    path = pathlib.Path(__file__).parent.resolve()
     ruleset_url = "https://raw.githubusercontent.com/Azure/APICenter-Analyzer/preview/resources/rulesets/oas.yaml"
-    spectral_analyse(res_file, ruleset_url, pathlib.Path(path / "../results"), out_file)
-    res, calc = any_spec_res(text_to_json_objects(pathlib.Path(path / "../results"), out_file))
-    pprint.pprint(res)
+    res_folder_path = pathlib.Path('../results')
+    unique_results = set()
+    calcs = []
+    for res_file in res_folder_path.glob("*"):
+        if res_file.suffix == ".yml":
+            out_file = os.path.basename(res_file.stem + "_output.json")
+            spectral_analyse(os.path.basename(res_file), ruleset_url, res_folder_path, os.path.basename(out_file))
+            res = any_spec_res(text_to_json_objects(res_folder_path, out_file))
+            for item in res:
+                unique_results.add(item)
+    with open(pathlib.Path(res_folder_path, 'output.jsonl'), 'w') as json_file:
+      for item in unique_results:
+        # 将每个对象转换回JSON字符串，并写入文件，每个对象占一行
+        json.dump(item.to_json(), json_file)
+        json_file.write('\n')
