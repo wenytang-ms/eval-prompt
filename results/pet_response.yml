@@ -1,26 +1,16 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
   title: Pets API
-  description: An API to manage pets data (CRUD operations for pets).
+  description: A simple API to manage pets.
   version: 1.0.0
-  contact:
-    name: API Support
-    email: support@example.com
-    url: http://example.com/support
 servers:
   - url: http://localhost:3000
     description: Local server
-tags:
-  - name: Pets
-    description: Operations related to pets management
 paths:
   /api/pets:
     get:
-      tags:
-        - Pets
       summary: Get all pets
       description: Retrieve a list of all pets.
-      operationId: getPets
       responses:
         '200':
           description: A list of pets.
@@ -31,11 +21,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Pet'
     post:
-      tags:
-        - Pets
       summary: Create a new pet
       description: Add a new pet to the list.
-      operationId: createPet
       requestBody:
         required: true
         content:
@@ -44,18 +31,15 @@ paths:
               $ref: '#/components/schemas/PetInput'
       responses:
         '200':
-          description: The created pet.
+          description: The newly created pet.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pet'
   /api/pets/{id}:
     get:
-      tags:
-        - Pets
       summary: Get a pet by ID
-      description: Retrieve a pet by its unique ID.
-      operationId: getPetById
+      description: Retrieve a single pet by its ID.
       parameters:
         - name: id
           in: path
@@ -73,11 +57,8 @@ paths:
         '404':
           description: Pet not found.
     put:
-      tags:
-        - Pets
       summary: Update a pet by ID
       description: Update the details of an existing pet by its ID.
-      operationId: updatePet
       parameters:
         - name: id
           in: path
@@ -101,11 +82,8 @@ paths:
         '404':
           description: Pet not found.
     delete:
-      tags:
-        - Pets
       summary: Delete a pet by ID
       description: Remove a pet from the list by its ID.
-      operationId: deletePet
       parameters:
         - name: id
           in: path
@@ -129,7 +107,16 @@ components:
       properties:
         id:
           type: integer
-          description: The unique ID of the pet.
+          description: The ID of the pet.
+        name:
+          type: string
+          description: The name of the pet.
+        type:
+          type: string
+          description: The type of the pet (e.g., Dog, Cat).
+    PetInput:
+      type: object
+      properties:
         name:
           type: string
           description: The name of the pet.
@@ -137,7 +124,5 @@ components:
           type: string
           description: The type of the pet (e.g., Dog, Cat).
       required:
-        - id
         - name
         - type
-   

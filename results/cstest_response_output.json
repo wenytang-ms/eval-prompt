@@ -1,0 +1,65 @@
+[
+	{
+		"code": "info-contact",
+		"path": [
+			"info"
+		],
+		"message": "Info object must have \"contact\" object.",
+		"severity": 1,
+		"range": {
+			"start": {
+				"line": 1,
+				"character": 5
+			},
+			"end": {
+				"line": 4,
+				"character": 16
+			}
+		},
+		"source": "c:/Users/wenyutang/workspace/eval-prompt/results/cstest_response.yml"
+	},
+	{
+		"code": "operation-description",
+		"path": [
+			"paths",
+			"/WeatherForecast",
+			"get"
+		],
+		"message": "Operation \"description\" must be present and non-empty string.",
+		"severity": 1,
+		"range": {
+			"start": {
+				"line": 9,
+				"character": 8
+			},
+			"end": {
+				"line": 33,
+				"character": 71
+			}
+		},
+		"source": "c:/Users/wenyutang/workspace/eval-prompt/results/cstest_response.yml"
+	},
+	{
+		"code": "operation-tag-defined",
+		"path": [
+			"paths",
+			"/WeatherForecast",
+			"get",
+			"tags",
+			"0"
+		],
+		"message": "Operation tags must be defined in global tags.",
+		"severity": 1,
+		"range": {
+			"start": {
+				"line": 13,
+				"character": 10
+			},
+			"end": {
+				"line": 13,
+				"character": 25
+			}
+		},
+		"source": "c:/Users/wenyutang/workspace/eval-prompt/results/cstest_response.yml"
+	}
+]
