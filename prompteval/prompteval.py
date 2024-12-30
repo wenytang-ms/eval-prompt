@@ -58,3 +58,21 @@ def remove_code_block_format(text):
     text = re.sub(r'^```yaml.*\n', '', text, flags=re.MULTILINE)
     text = re.sub(r'\n```$', '', text, flags=re.MULTILINE)
     return text
+
+def clean_folder(folder_path):
+    # 检查文件夹是否存在
+    if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        # 遍历文件夹中的所有内容
+        for filename in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, filename)
+            try:
+                # 如果是文件，则删除
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                # 如果是目录，则递归删除
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print(f'Failed to delete {file_path}. Reason: {e}')
+    else:
+        print(f"The folder {folder_path} does not exist.")
