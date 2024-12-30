@@ -1,0 +1,7 @@
+{"severity": 1, "code": "oas3-api-servers", "message": "OpenAPI \"servers\" must be present and non-empty array."}
+{"severity": 1, "code": "operation-tags", "message": "Operation must have non-empty \"tags\" array."}
+{"severity": 1, "code": "operation-operationId", "message": "Operation must have \"operationId\"."}
+{"severity": 1, "code": "operation-description", "message": "Operation \"description\" must be present and non-empty string."}
+{"severity": 1, "code": "info-description", "message": "Info \"description\" must be present and non-empty string."}
+{"severity": 1, "code": "operation-tag-defined", "message": "Operation tags must be defined in global tags."}
+{"severity": 1, "code": "info-contact", "message": "Info object must have \"contact\" object."}
