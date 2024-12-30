@@ -14,8 +14,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+
       - name: Install the project dependencies
-        run: pip install -r requirements.txt
+        run: poetry install
       
       - name: Azure login
         uses: azure/login@v2
@@ -29,13 +32,7 @@ jobs:
           AZURE_STORAGE_ACCOUNT_URL: ${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}
           AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}
         run: |
-          python prompteval/downloadSpecFiles.py
-
-      - name: setup output
-        working-directory: .
-        run: |
-          mkdir -p results
-          touch results/output.jsonl
+          poetry run python prompteval/downloadSpecFiles.py
 
       - name: generate yml
         env:
@@ -44,7 +41,7 @@ jobs:
           AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
           RBAC: ${{ secrets.RBAC }}
         run: |
-          python prompteval/prompteval.py
+          poetry run python prompteval/prompteval.py
 
       - uses: actions/setup-node@v4
         with:
@@ -53,18 +50,24 @@ jobs:
       - name: install spectral
         run: npm install -g @stoplight/spectral-cli
 
-      # - name: run spectral
-      #   run: |
-      #     spectral lint results/cstest_response.yml --ruleset=https://raw.githubusercontent.com/Azure/APICenter-Analyzer/preview/resources/rulesets/oas.yaml --format json -o results/cstest_response_output.json
-      #     spectral lint results/pytest_response.yml --ruleset=https://raw.githubusercontent.com/Azure/APICenter-Analyzer/preview/resources/rulesets/oas.yaml --format json -o results/pytest_response_output.json
-      #     spectral lint results/pet_response.yml --ruleset=https://raw.githubusercontent.com/Azure/APICenter-Analyzer/preview/resources/rulesets/oas.yaml --format json -o results/pet_response_output.json
-
       - name: run evaluate
         run: |
-          python prompteval/analyse.py
+          poetry run python prompteval/evaluate.py
 
       - uses: actions/upload-artifact@v4
         with:
           name: results
           path: |
             results/
+
+      - name: Read JSONL file and show warning or error
+        run: |
+          Get-Content ./results/output.jsonl | ForEach-Object {
+            $json = $_ | ConvertFrom-Json
+            if ($json.priority -eq 1) {
+              Write-Output "::warning::$($json.message)"
+            } elseif ($json.priority -eq 0) {
+              Write-Output "::error::$($json.message)"
+            }
+          }
+        shell: pwsh
