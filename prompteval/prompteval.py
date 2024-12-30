@@ -28,22 +28,21 @@ templateEnv = jinja2.Environment(loader=templateLoader)
 user_message_template2 = templateEnv.get_template("user-message.jinja2")
 
 def get_openai_client():
-    if('FALSE' == os.environ['RBAC']):
-        return AzureOpenAI(
-            azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
-            api_version=os.environ["AZURE_OPENAI_API_VERSION"],
-            api_key=os.environ["AZURE_OPENAI_API_KEY"],
-            rbac_token=os.environ["AZURE_OPENAI_RBAC_TOKEN"]
-        )
-    else:
+    if os.environ['RBAC'] == "TRUE":
         token_provider = get_bearer_token_provider(
                 AzureCliCredential(), "https://cognitiveservices.azure.com/.default"
             )
         return AzureOpenAI(
-            api_version=os.environ["OPENAI_API_VERSION"],
+            api_version=os.environ["AZURE_OPENAI_API_VERSION"],
             azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
             azure_ad_token_provider=token_provider
-            )
+        )
+    else:
+        return AzureOpenAI(
+            azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
+            api_version=os.environ["AZURE_OPENAI_API_VERSION"],
+            api_key=os.environ["AZURE_OPENAI_API_KEY"],
+        )
 
 def augemented_qa(context: str, languageId: str) -> str:
     user_message = user_message_template2.render(contexts=context, languageId=languageId)

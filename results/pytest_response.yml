@@ -1,12 +1,11 @@
 openapi: 3.0.0
 info:
-  title: Flask REST API
+  title: Flask RESTful API
   version: 1.0.0
 paths:
   /:
     get:
-      summary: Get hello message
-      operationId: getHelloMessage
+      summary: Get a greeting message
       responses:
         '200':
           description: Successful response
@@ -19,8 +18,7 @@ paths:
                     type: string
                     example: hello world
     post:
-      summary: Post data
-      operationId: postData
+      summary: Post data and receive it back
       requestBody:
         required: true
         content:
@@ -29,7 +27,7 @@ paths:
               type: object
       responses:
         '201':
-          description: Created
+          description: Created response
           content:
             application/json:
               schema:
@@ -39,8 +37,7 @@ paths:
                     type: object
   /square/{num}:
     get:
-      summary: Get square of a number
-      operationId: getSquare
+      summary: Get the square of a number
       parameters:
         - name: num
           in: path

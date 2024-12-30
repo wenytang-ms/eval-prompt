@@ -33,31 +33,29 @@
 				"character": 8
 			},
 			"end": {
-				"line": 33,
-				"character": 71
+				"line": 20,
+				"character": 62
 			}
 		},
 		"source": "c:/Users/wenyutang/workspace/eval-prompt/results/cstest_response.yml"
 	},
 	{
-		"code": "operation-tag-defined",
+		"code": "operation-tags",
 		"path": [
 			"paths",
 			"/WeatherForecast",
-			"get",
-			"tags",
-			"0"
+			"get"
 		],
-		"message": "Operation tags must be defined in global tags.",
+		"message": "Operation must have non-empty \"tags\" array.",
 		"severity": 1,
 		"range": {
 			"start": {
-				"line": 13,
-				"character": 10
+				"line": 9,
+				"character": 8
 			},
 			"end": {
-				"line": 13,
-				"character": 25
+				"line": 20,
+				"character": 62
 			}
 		},
 		"source": "c:/Users/wenyutang/workspace/eval-prompt/results/cstest_response.yml"

@@ -10,7 +10,7 @@
 				"character": 0
 			},
 			"end": {
-				"line": 58,
+				"line": 55,
 				"character": 33
 			}
 		},
@@ -69,7 +69,28 @@
 				"character": 8
 			},
 			"end": {
-				"line": 19,
+				"line": 18,
+				"character": 40
+			}
+		},
+		"source": "c:/Users/wenyutang/workspace/eval-prompt/results/pytest_response.yml"
+	},
+	{
+		"code": "operation-operationId",
+		"path": [
+			"paths",
+			"/",
+			"get"
+		],
+		"message": "Operation must have \"operationId\".",
+		"severity": 1,
+		"range": {
+			"start": {
+				"line": 6,
+				"character": 8
+			},
+			"end": {
+				"line": 18,
 				"character": 40
 			}
 		},
@@ -90,7 +111,7 @@
 				"character": 8
 			},
 			"end": {
-				"line": 19,
+				"line": 18,
 				"character": 40
 			}
 		},
@@ -107,11 +128,32 @@
 		"severity": 1,
 		"range": {
 			"start": {
-				"line": 20,
+				"line": 19,
 				"character": 9
 			},
 			"end": {
-				"line": 38,
+				"line": 36,
+				"character": 32
+			}
+		},
+		"source": "c:/Users/wenyutang/workspace/eval-prompt/results/pytest_response.yml"
+	},
+	{
+		"code": "operation-operationId",
+		"path": [
+			"paths",
+			"/",
+			"post"
+		],
+		"message": "Operation must have \"operationId\".",
+		"severity": 1,
+		"range": {
+			"start": {
+				"line": 19,
+				"character": 9
+			},
+			"end": {
+				"line": 36,
 				"character": 32
 			}
 		},
@@ -128,11 +170,11 @@
 		"severity": 1,
 		"range": {
 			"start": {
-				"line": 20,
+				"line": 19,
 				"character": 9
 			},
 			"end": {
-				"line": 38,
+				"line": 36,
 				"character": 32
 			}
 		},
@@ -149,11 +191,32 @@
 		"severity": 1,
 		"range": {
 			"start": {
-				"line": 40,
+				"line": 38,
 				"character": 8
 			},
 			"end": {
-				"line": 58,
+				"line": 55,
+				"character": 33
+			}
+		},
+		"source": "c:/Users/wenyutang/workspace/eval-prompt/results/pytest_response.yml"
+	},
+	{
+		"code": "operation-operationId",
+		"path": [
+			"paths",
+			"/square/{num}",
+			"get"
+		],
+		"message": "Operation must have \"operationId\".",
+		"severity": 1,
+		"range": {
+			"start": {
+				"line": 38,
+				"character": 8
+			},
+			"end": {
+				"line": 55,
 				"character": 33
 			}
 		},
@@ -170,11 +233,11 @@
 		"severity": 1,
 		"range": {
 			"start": {
-				"line": 40,
+				"line": 38,
 				"character": 8
 			},
 			"end": {
-				"line": 58,
+				"line": 55,
 				"character": 33
 			}
 		},

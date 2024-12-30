@@ -5,65 +5,87 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:3000
-    description: Local server
 paths:
   /api/pets:
     get:
       summary: Get all pets
-      description: Retrieve a list of all pets.
       responses:
         '200':
-          description: A list of pets.
+          description: A list of pets
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Pet'
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    type:
+                      type: string
     post:
-      summary: Create a new pet
-      description: Add a new pet to the list.
+      summary: Add a new pet
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PetInput'
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+              required:
+                - name
+                - type
       responses:
         '200':
-          description: The newly created pet.
+          description: The newly created pet
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  type:
+                    type: string
   /api/pets/{id}:
     get:
       summary: Get a pet by ID
-      description: Retrieve a single pet by its ID.
       parameters:
         - name: id
           in: path
           required: true
-          description: The ID of the pet to retrieve.
           schema:
             type: integer
       responses:
         '200':
-          description: The requested pet.
+          description: A pet object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  type:
+                    type: string
         '404':
-          description: Pet not found.
+          description: Pet not found
     put:
       summary: Update a pet by ID
-      description: Update the details of an existing pet by its ID.
       parameters:
         - name: id
           in: path
           required: true
-          description: The ID of the pet to update.
           schema:
             type: integer
       requestBody:
@@ -71,58 +93,52 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PetInput'
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+              required:
+                - name
+                - type
       responses:
         '200':
-          description: The updated pet.
+          description: The updated pet
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  type:
+                    type: string
         '404':
-          description: Pet not found.
+          description: Pet not found
     delete:
       summary: Delete a pet by ID
-      description: Remove a pet from the list by its ID.
       parameters:
         - name: id
           in: path
           required: true
-          description: The ID of the pet to delete.
           schema:
             type: integer
       responses:
         '200':
-          description: The deleted pet.
+          description: The deleted pet
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  type:
+                    type: string
         '404':
-          description: Pet not found.
-components:
-  schemas:
-    Pet:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: The ID of the pet.
-        name:
-          type: string
-          description: The name of the pet.
-        type:
-          type: string
-          description: The type of the pet (e.g., Dog, Cat).
-    PetInput:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the pet.
-        type:
-          type: string
-          description: The type of the pet (e.g., Dog, Cat).
-      required:
-        - name
-        - type
+          description: Pet not found
