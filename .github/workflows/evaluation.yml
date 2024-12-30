@@ -38,7 +38,7 @@ jobs:
           AZURE_STORAGE_ACCOUNT_URL: ${{ secrets.AZURE_STORAGE_ACCOUNT_URL }}
           AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}
         run: |
-          poetry run prompteval/downloadSpecFiles.py
+          poetry run ./prompteval/downloadSpecFiles.py
 
       - name: ls files
         run: |
